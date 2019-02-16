@@ -1,6 +1,6 @@
 
 
-#include <psp2/io/stat.h> 
+#include <psp2/io/stat.h>
 #include <psp2/sysmodule.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/display.h>
@@ -13,7 +13,6 @@
 #include <math.h>
 
 #include <vita2d.h>
-
 
 #include <stdio.h>
 #include <malloc.h>
@@ -29,9 +28,9 @@
 struct stringcurl {
   char *ptr;
   size_t len;
-}; 
+};
 
-extern int progress_func(void* ptr, double TotalToDownload, double NowDownloaded, 
+extern int progress_func(void* ptr, double TotalToDownload, double NowDownloaded,
                     double TotalToUpload, double NowUploaded);
 
 extern void init_string(struct stringcurl *s);

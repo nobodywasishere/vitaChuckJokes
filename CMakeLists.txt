@@ -25,12 +25,12 @@ include_directories(
   common
 )
 
-add_executable(${PROJECT_NAME}
+add_executable(${PROJECT_NAME}.elf
   src/main.cpp
   src/utils.cpp
 )
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(${PROJECT_NAME}.elf
   debugnet
   vita2d
   soloud
@@ -70,7 +70,7 @@ target_link_libraries(${PROJECT_NAME}
 
 )
 
-vita_create_self(${PROJECT_NAME}.self ${PROJECT_NAME})
+vita_create_self(${PROJECT_NAME}.self ${PROJECT_NAME}.elf)
 vita_create_vpk(${PROJECT_NAME}.vpk ${VITA_TITLEID} ${PROJECT_NAME}.self
   VERSION ${VITA_VERSION}
   NAME ${VITA_APP_NAME}

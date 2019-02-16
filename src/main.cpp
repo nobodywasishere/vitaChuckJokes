@@ -27,10 +27,12 @@ int main(int argc, char *argv[]) {
 		sceIoMkdir("ux0:data/chuckJokes" , 0777);
 	}
 
-	//load texture, if !texture download from https://assets.chucknorris.host/img/avatar/chuck-norris.png and try again.
+	//load texture, if !texture download from
+	//https://assets.chucknorris.host/img/avatar/chuck-norris.png and try again.
 	vita2d_texture *icon = vita2d_load_PNG_file("ux0:data/chuckJokes/icon.png");
 	if(!icon){
-		curlDownloadFile("https://assets.chucknorris.host/img/avatar/chuck-norris.png",  "ux0:data/chuckJokes/icon.png");
+		curlDownloadFile("https://assets.chucknorris.host/img/avatar/chuck-norris.png",\
+		  "ux0:data/chuckJokes/icon.png");
 		icon = vita2d_load_PNG_file("ux0:data/chuckJokes/icon.png");
 	}
 
@@ -39,28 +41,38 @@ int main(int argc, char *argv[]) {
 
 	//set up the pad?
 	memset(&pad, 0, sizeof(pad));
-	bool next = false;
+	bool crossNeedReset = false;
+	bool haveFreshJoke = true;
+
 
 	//get a joke from chuck jokes website.
 	std::string message_text = getJoke();
+	std::string next_msg = getJoke();
 
 	//YES, infinit loop, whatever.
 	while (1) {
 		sceCtrlPeekBufferPositive(0, &pad, 1);
 
+		if (!haveFreshJoke) {
+			vita2d_draw_rectangle()
+			next_msg = getJoke();
+			haveFreshJoke = true;
+		}
+
 		//if start, exit loop.
 		if (pad.buttons & SCE_CTRL_START)
 			break;
 
-		//if cross get new joke, && !next stops things from repeating.
-		if ((pad.buttons & SCE_CTRL_CROSS) && !next){
-			next = true;
+		//if cross get new joke, && !crossNeedReset stops things from repeating.
+		if ((pad.buttons & SCE_CTRL_CROSS) && !crossNeedReset && !haveFreshJoke){
+			haveFreshJoke = false;
+			crossNeedReset = true;
 			message_text = "";
-			message_text = getJoke();
+			message_text = next_msg;
 		}
 
 		//if not cross allow button press action
-		else next = false;
+		else crossNeedReset = false;
 
 		//start drawing and clear screen every frame.
 		vita2d_start_drawing();
@@ -74,7 +86,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		//attempt at drawing string char by char within screen bounds.
-		int xpos = 200;
+		int xpos = 150;
 		int ypos = 250;
 		for(int i = 0; i < message_text.length();i++){
 			vita2d_pgf_draw_textf(pgf,xpos,ypos,RGBA8(255,255,255,255),1.0f,"%c", message_text.at(i));

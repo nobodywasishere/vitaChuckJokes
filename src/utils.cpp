@@ -3,8 +3,7 @@
 #include "utils.h"
 
 
-int progress_func(void* ptr, double TotalToDownload, double NowDownloaded, \
-                    double TotalToUpload, double NowUploaded) {
+int progress_func(void* ptr, double TotalToDownload, double NowDownloaded, double TotalToUpload, double NowUploaded) {
     // ensure that the file to be downloaded is not empty
     // because that would cause a division by zero error later on
     if (TotalToDownload <= 0.0) {
@@ -77,7 +76,9 @@ std::string getCurlString(std::string url){
 		init_string(&header);
 		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 		// Set useragant string
-		curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+		curl_easy_setopt(curl, CURLOPT_USERAGENT, \
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 \
+      (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 		// not sure how to use this when enabled
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
 		// not sure how to use this when enabled
@@ -107,7 +108,9 @@ std::string getCurlString(std::string url){
 		struct curl_slist *headerchunk = NULL;
 		headerchunk = curl_slist_append(headerchunk, "Accept: */*");
 		headerchunk = curl_slist_append(headerchunk, "Content-Type: application/json");
-		headerchunk = curl_slist_append(headerchunk, "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+		headerchunk = curl_slist_append(headerchunk, "User-Agent: Mozilla/5.0 \
+      (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) \
+      Chrome/58.0.3029.110 Safari/537.36");
 		headerchunk = curl_slist_append(headerchunk, "Content-Length: 0");
 		res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerchunk);
 

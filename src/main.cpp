@@ -36,6 +36,15 @@ int main(int argc, char *argv[]) {
 		icon = vita2d_load_PNG_file("ux0:data/chuckJokes/icon.png");
 	}
 
+	// load button textures
+	vita2d_texture *cross_opengray = vita2d_load_PNG_file("app0:/images/cross_opengray.png");
+	vita2d_texture *cross_openblue = vita2d_load_PNG_file("app0:/images/cross_openblue.png");
+	vita2d_texture *cross_closedgray = vita2d_load_PNG_file("app0:/images/cross_closedgray.png");
+	vita2d_texture *cross_closedblue = vita2d_load_PNG_file("app0:/images/cross_closedblue.png");
+	vita2d_texture *cross_texture = cross_openblue;
+	int cross_x = 860;
+	int cross_y = 444;
+
   // the default font to be used. can also load from file using other formats.
 	pgf = vita2d_load_default_pgf();
 
@@ -54,9 +63,9 @@ int main(int argc, char *argv[]) {
 		sceCtrlPeekBufferPositive(0, &pad, 1);
 
 		if (!haveFreshJoke) {
-			vita2d_draw_rectangle()
 			next_msg = getJoke();
 			haveFreshJoke = true;
+			//remove rectangle
 		}
 
 		//if start, exit loop.
@@ -64,15 +73,18 @@ int main(int argc, char *argv[]) {
 			break;
 
 		//if cross get new joke, && !crossNeedReset stops things from repeating.
-		if ((pad.buttons & SCE_CTRL_CROSS) && !crossNeedReset && !haveFreshJoke){
-			haveFreshJoke = false;
-			crossNeedReset = true;
-			message_text = "";
-			message_text = next_msg;
+		if (pad.buttons & SCE_CTRL_CROSS) {
+			cross_texture = cross_opengray;
+			if (!crossNeedReset && haveFreshJoke) {
+				haveFreshJoke = false;
+				crossNeedReset = true;
+				message_text = "";
+				message_text = next_msg;
+			}
+		} else {
+			crossNeedReset = false;
+			cross_texture = cross_openblue;
 		}
-
-		//if not cross allow button press action
-		else crossNeedReset = false;
 
 		//start drawing and clear screen every frame.
 		vita2d_start_drawing();
@@ -85,14 +97,16 @@ int main(int argc, char *argv[]) {
 			544 / 4 - vita2d_texture_get_height(icon));
 		}
 
+		vita2d_draw_texture(cross_texture, cross_x, cross_y);
+
 		//attempt at drawing string char by char within screen bounds.
-		int xpos = 150;
+		int xpos = 200;
 		int ypos = 250;
 		for(int i = 0; i < message_text.length();i++){
 			vita2d_pgf_draw_textf(pgf,xpos,ypos,RGBA8(255,255,255,255),1.0f,"%c", message_text.at(i));
 			xpos += vita2d_pgf_text_height(pgf, 1.0f,&message_text.at(i)) + 1;
 			if(xpos > 760 && message_text[i] == ' '){
-				xpos = 200;
+				xpos = 150;
 				ypos += vita2d_pgf_text_height(pgf, 1.0f,&message_text.at(i)) + 5;
 			}
 		}//end attempt.
@@ -109,6 +123,10 @@ int main(int argc, char *argv[]) {
 	//finish vita2d stuff.
 	vita2d_fini();
 	vita2d_free_texture(icon);//this may not be correct, added last min. Still needed, just maybe corrected.
+	vita2d_free_texture(cross_openblue);
+	vita2d_free_texture(cross_opengray);
+	vita2d_free_texture(cross_closedblue);
+	vita2d_free_texture(cross_closedgray);
 	vita2d_free_pgf(pgf);
 
 	sceKernelExitProcess(0);

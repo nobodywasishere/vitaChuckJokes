@@ -6,7 +6,11 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "soloud.h"
+#include "soloud_wav.h"
+
 #include <psp2/ctrl.h>
+#include <psp2/audioout.h>
 #include <psp2/kernel/processmgr.h>
 
 
@@ -39,14 +43,22 @@ int main(int argc, char *argv[]) {
 	// load button textures
 	vita2d_texture *cross_opengray = vita2d_load_PNG_file("app0:/images/cross_opengray.png");
 	vita2d_texture *cross_openblue = vita2d_load_PNG_file("app0:/images/cross_openblue.png");
-	vita2d_texture *cross_closedgray = vita2d_load_PNG_file("app0:/images/cross_closedgray.png");
-	vita2d_texture *cross_closedblue = vita2d_load_PNG_file("app0:/images/cross_closedblue.png");
+	//vita2d_texture *cross_closedgray = vita2d_load_PNG_file("app0:/images/cross_closedgray.png");
+	//vita2d_texture *cross_closedblue = vita2d_load_PNG_file("app0:/images/cross_closedblue.png");
 	vita2d_texture *cross_texture = cross_openblue;
 	int cross_x = 860;
 	int cross_y = 444;
 
   // the default font to be used. can also load from file using other formats.
 	pgf = vita2d_load_default_pgf();
+
+	//sound init
+	SoLoud::Soloud sfx; // SoLoud engine
+	SoLoud::Wav s_punch; // One wave file
+
+	sfx.init();
+	s_punch.load("app0:/sounds/punch.wav");
+
 
 	//set up the pad?
 	memset(&pad, 0, sizeof(pad));
@@ -76,6 +88,7 @@ int main(int argc, char *argv[]) {
 		if (pad.buttons & SCE_CTRL_CROSS) {
 			cross_texture = cross_opengray;
 			if (!crossNeedReset && haveFreshJoke) {
+				sfx.play(s_punch);
 				haveFreshJoke = false;
 				crossNeedReset = true;
 				message_text = "";
@@ -125,8 +138,8 @@ int main(int argc, char *argv[]) {
 	vita2d_free_texture(icon);//this may not be correct, added last min. Still needed, just maybe corrected.
 	vita2d_free_texture(cross_openblue);
 	vita2d_free_texture(cross_opengray);
-	vita2d_free_texture(cross_closedblue);
-	vita2d_free_texture(cross_closedgray);
+	//vita2d_free_texture(cross_closedblue);
+	//vita2d_free_texture(cross_closedgray);
 	vita2d_free_pgf(pgf);
 
 	sceKernelExitProcess(0);

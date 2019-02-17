@@ -22,3 +22,5 @@ Requires vita sdk.
 * Vita sdk team
 * Xerpi for vita2d
 * https://api.chucknorris.io/ for the jokes
+* Cartoon punch sound by Ekokubza123 on Freesound.org:
+* https://freesound.org/people/Ekokubza123/sounds/104183/

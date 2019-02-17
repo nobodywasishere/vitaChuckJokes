@@ -81,7 +81,7 @@ vita_create_vpk(${PROJECT_NAME}.vpk ${VITA_TITLEID} ${PROJECT_NAME}.self
   FILE sce_sys/livearea/contents/template.xml sce_sys/livearea/contents/template.xml
 
   FILE images/cross_opengray.png images/cross_opengray.png
-  FILE images/cross_closedgray.png images/cross_closedgray.png
   FILE images/cross_openblue.png images/cross_openblue.png
-  FILE images/cross_closedblue.png images/cross_closedblue.png
+
+  FILE sounds/punch.wav FILE sounds/punch.wav
 )

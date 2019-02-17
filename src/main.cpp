@@ -112,17 +112,23 @@ int main(int argc, char *argv[]) {
 
 		vita2d_draw_texture(cross_texture, cross_x, cross_y);
 
+		vita2d_pgf_draw_textf(
+			pgf,150,200,
+			RGBA8(255,255,255,255),1.0f,"%s",
+			word_wrap(message_text, 70).c_str()
+		);
+
 		//attempt at drawing string char by char within screen bounds.
-		int xpos = 200;
-		int ypos = 250;
-		for(int i = 0; i < message_text.length();i++){
-			vita2d_pgf_draw_textf(pgf,xpos,ypos,RGBA8(255,255,255,255),1.0f,"%c", message_text.at(i));
-			xpos += vita2d_pgf_text_height(pgf, 1.0f,&message_text.at(i)) + 1;
-			if(xpos > 760 && message_text[i] == ' '){
-				xpos = 150;
-				ypos += vita2d_pgf_text_height(pgf, 1.0f,&message_text.at(i)) + 5;
-			}
-		}//end attempt.
+		//int xpos = 200;
+		//int ypos = 250;
+		//for(int i = 0; i < message_text.length();i++){
+		//	vita2d_pgf_draw_textf(pgf,xpos,ypos,RGBA8(255,255,255,255),1.0f,"%c", message_text.at(i));
+		//	xpos += vita2d_pgf_text_height(pgf, 1.0f,&message_text.at(i)) + 1;
+		//	if(xpos > 760 && message_text[i] == ' '){
+		//		xpos = 150;
+		//		ypos += vita2d_pgf_text_height(pgf, 1.0f,&message_text.at(i)) + 5;
+		//	}
+		//}//end attempt.
 
 		//again, both of these at the end of every frame.
 		vita2d_end_drawing();

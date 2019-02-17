@@ -13,10 +13,12 @@ Requires vita sdk.
 * Credits menu (3)
 * background music (4)
 * "Press Start to Exit" (1)
+* Spacing between lines (2)
 * Touch for new jokes (2)
-* Bigger cross button (1)
 * Livearea is a mess - fix it (4)
 * Better in-app UI (time, date, battery, etc) (4)
+* DONE: Bigger cross button (1)
+* DONE: Automatic word wrapping (2)
 
 ### Credits
 * Vita sdk team
